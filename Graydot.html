@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* CSS Styles */
+        .container {
+            width: 300px;
+            height: 300px;
+            border: 2px solid red;
+            padding: 10px;
+            float: left;
+            margin: 20px;
+        }
+
+        .box {
+            text-align: center;
+            border: 1px solid black;
+            background-color: aqua;
+            color: blueviolet;
+            border-radius: 32px;
+            margin: 30px;
+            cursor: move;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
+
+<body>
+
+    <!-- <img src="https://wallpapercave.com/wp/wp1828904.png" alt="Error" > -->
+    <div class="container" id="graydot1">
+        
+        <!-- These are the boxes which are moving from one container to another -->
+        <div class="box" draggable="true">First Name</div>
+        <div class="box" draggable="true">Last Name</div>
+        <div class="box" draggable="true">Phone No.</div>
+        <div class="box" draggable="true">Email</div>
+        <div class="box" draggable="true">Age</div>
+    </div>
+
+    <div class="container" id="graydot2">
+    </div>
+    <!-- Reset button is used for resetting boxes which are moved from one container to another container -->
+    <button onclick="reset()"> Reset BTN </button>
+
+    <!-- Javascript is used for moving , drop the box items from one conatiner to another  -->
+    <script>
+
+        var draggedItem;
+
+        var boxes = document.getElementsByClassName("box");
+        for (var i = 0; i < boxes.length; i++) {
+            boxes[i].addEventListener("dragstart", dragStart);
+            boxes[i].addEventListener("dragend", dragEnd);
+        }
+
+        var graydot2 = document.getElementById("graydot2");
+        graydot2.addEventListener("dragover", dragOver);
+        graydot2.addEventListener("dragenter", dragEnter);
+        graydot2.addEventListener("dragleave", dragLeave);
+        graydot2.addEventListener("drop", drop);
+
+        //  Making Function is very intersting in JavaScript
+
+        function dragStart(event) {
+            draggedItem = this;
+            this.classList.add("dragging");
+        }
+
+        function dragEnd(event) {
+            this.classList.remove("dragging");
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function dragEnter(event) {
+            this.classList.add("highlight");
+        }
+
+        function dragLeave(event) {
+            this.classList.remove("highlight");
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            this.classList.remove("highlight");
+            this.appendChild(draggedItem);
+            showSuccessMessage();
+        }
+
+        function showSuccessMessage() {
+            var messageElement = document.getElementById("successMessage");
+            if (messageElement) {
+                messageElement.remove();
+            }
+            var successMessage = document.createElement("div");
+            successMessage.id = "successMessage";
+            successMessage.classList.add("success-message");
+            successMessage.textContent = "Item dropped successfully!";
+            container2.appendChild(successMessage);
+        }
+
+        function reset() {
+            graydot2.innerHTML = "";
+            var graydot1 = document.getElementById("graydot1");
+            var originalItems = container1.getElementsByClassName("box");
+            for (var i = 0; i < originalItems.length; i++) {
+                container1.appendChild(originalItems[i]);
+            }
+        }
+    </script>
+</body>
+</head>
+
+</html>
